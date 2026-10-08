@@ -1,0 +1,1 @@
+97c7afb31ef379d242d8586244e2f6edb0a76752 2026-08-18 12:55:36 +0300 Embed definitions.json at compile time instead of reading a cwd-relative path

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head><meta charset="utf-8"></head>
+<body>
+<h1 dir="auto">Rawahel Community Development Foundation</h1>
+<h2 dir="auto">تقرير حادثة أمنية / Security Incident Report</h2>
+<p dir="auto">رقم الحادثة / Incident no.: HR/2026/6427</p>
+<p dir="auto">التاريخ / Date: 2026-06-12</p>
+<p dir="auto">أعد التقرير / Reported by: ميس الضمور &lt;maisdmour@rawahel-dev.org&gt;</p>
+<p dir="auto">الجهاز المتأثر / Affected host: fw-edge-01 (192.168.29.12)</p>
+<p dir="auto">إصدار الوكيل / Agent build: 1.8.14.192</p>
+<br>
+<p dir="auto">رصد النظام 176 محاولة دخول فاشلة عبر SSH من العنوان 192.0.2.177 استهدفت الخادم 192.168.29.12.</p>
+<p dir="auto">الـ endpoint agent (build 7.8.7.225) عمل block للـ source، وعملنا reset لباسوورد بيان حداد.</p>
+<br>
+<h2 dir="auto">مقتطف من السجل / Log excerpt</h2>
+<p dir="auto">2026-06-12 20:23:32 nginx: 2001:0db8:6c18:eb00:3420:24c1:0000:0001 &quot;GET /api/v1/users HTTP/1.1&quot; 500</p>
+<p dir="auto">2026-06-12 20:45:39 nginx: 2001:0db8:c2b0:9680:122c:7afc:0000:0001 &quot;GET /reports/2026 HTTP/1.1&quot; 404</p>
+<p dir="auto">2026-06-12 20:05:14 nginx: fe80::6807:2033:d629:e7cf &quot;GET /wp-login.php HTTP/1.1&quot; 500</p>
+<p dir="auto">2026-06-12 20:30:37 sshd[9315]: Failed password for invalid user backup from 192.0.2.177 port 59524 ssh2</p>
+<p dir="auto">2026-06-12 20:47:27 sshd[1007]: Failed password for invalid user deploy from 203.0.113.162 port 55118 ssh2</p>
+<br>
+<p dir="auto">للمتابعة تواصلوا مع فريق تقنية المعلومات على admin@rawahel-dev.org أو +962 6 802 5759.</p>
+</body>
+</html>

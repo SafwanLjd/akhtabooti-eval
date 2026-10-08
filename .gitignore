@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+/models/
+rust/*/target/
+rust/*/bin/
+/dist/
+/build/
+*.egg-info/
+/reports/

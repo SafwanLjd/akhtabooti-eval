@@ -1,0 +1,19 @@
+Nahda Specialty Hospital
+Security incident report
+Incident no.: FIN/2024/4471
+Date: 2026-07-27
+Reported by: Hisham Jarrar <hisham1998@nahda-hospital.jo>
+Affected host: fw-edge-01 (203.0.113.216)
+Agent build: 9.5.9.3
+
+The system logged 50 failed SSH logins from 172.17.161.38 against 203.0.113.216.
+The endpoint agent (build 10.0.1.165) blocked the source, and the password of Suha Abu Ghosh was reset.
+
+Log excerpt
+2026-07-27 04:06:47 kernel: [UFW BLOCK] SRC=172.17.161.38 DST=203.0.113.216 PROTO=TCP SPT=65106 DPT=22
+2026-07-27 04:39:07 sshd[7968]: Accepted publickey for oracle from 172.17.161.38 port 63877
+2026-07-27 04:18:35 nginx: fe80::c29e:c756:f59b:4873 "GET /api/v1/users HTTP/1.1" 500
+
+Follow-up: contact the IT team at contact@nahda-hospital.jo or 06 3164748.
+
+Form PRG-09 rev. 5

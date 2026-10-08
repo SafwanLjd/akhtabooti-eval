@@ -1,0 +1,19 @@
+[package]
+name = "akh-core-rules"
+version = "0.1.0"
+edition = "2021"
+description = "Runs the exact text-detection rules of a pinned akhtabooti-core commit over JSON lines"
+publish = false
+
+[[bin]]
+name = "akh-core-rules"
+path = "src/main.rs"
+
+[dependencies]
+regex = "1.11"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+strsim = "0.11"
+
+[profile.release]
+debug = false

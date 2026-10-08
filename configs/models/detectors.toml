@@ -1,0 +1,33 @@
+# Hugging Face snapshots the model detectors load. Each entry pins a commit and
+# lists the files to fetch; paths are relative to the repository root.
+
+[[hf]]
+name = "nym-pii-multilingual-small"
+repo = "Wismut/nym-pii-multilingual-small"
+revision = "4348999cd3c2e20c49615e9af7c6bbb45b64cd85"
+path = "models/nym-pii-multilingual-small"
+allow = ["config.json", "tokenizer.json", "tokenizer_config.json", "README.md", "int8/*", "edge-int8/*"]
+
+[[hf]]
+name = "camelbert-mix-ner"
+repo = "CAMeL-Lab/bert-base-arabic-camelbert-mix-ner"
+revision = "40b8059a6f3bfbb49d64038e131f49b93cc37417"
+path = "models/camelbert-mix-ner"
+allow = ["config.json", "pytorch_model.bin", "vocab.txt", "tokenizer_config.json", "special_tokens_map.json", "README.md"]
+
+# 1.2 GB checkpoint: mmBERT-base encoder, linear emission layer and CRF.
+[[hf]]
+name = "dialogpii"
+repo = "DFKI-SLT/multilingual_DialogPII_NER"
+revision = "8d3773ceb8887acfd16c6965d3ac5c5e9705b3e1"
+path = "models/dialogpii"
+allow = ["*.json", "pytorch_model.bin", "README.md"]
+
+# The DialogPII checkpoint has no encoder config; the detector builds the
+# encoder from this one and then loads the checkpoint weights into it.
+[[hf]]
+name = "mmbert-base-config"
+repo = "jhu-clsp/mmBERT-base"
+revision = "c5955035435e2bf121cde7f3c8863ef52ff35d82"
+path = "models/mmbert-base"
+allow = ["config.json"]

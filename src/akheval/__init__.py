@@ -1,0 +1,3 @@
+"""Evaluation harness for the Akhtabooti PII scanner."""
+
+__version__ = "1.0.0"

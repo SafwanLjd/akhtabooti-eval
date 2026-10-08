@@ -1,0 +1,63 @@
+default_install_hook_types: [pre-commit, commit-msg]
+default_stages: [pre-commit]
+exclude: ^(datasets/.*/files/|rust/core-rules/vendor/)
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+        args: [--fix=lf]
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: detect-private-key
+      - id: check-added-large-files
+        args: [--maxkb=1500]
+        exclude: ^datasets/
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.17.0
+    hooks:
+      - id: ruff-check
+        args: [--fix]
+      - id: ruff-format
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v4.4.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+
+  - repo: local
+    hooks:
+      - id: mypy
+        name: mypy
+        entry: mypy src
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: pytest
+        name: unit tests
+        entry: python -m pytest -q -m "not integration"
+        language: system
+        types: [python]
+        pass_filenames: false
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: sh -c 'for manifest in rust/*/Cargo.toml; do cargo fmt --manifest-path "$manifest" -- --check || exit 1; done'
+        language: system
+        files: ^rust/.*\.rs$
+        pass_filenames: false
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: sh -c 'for manifest in rust/*/Cargo.toml; do AKH_CORE_VENDOR=937e6ca cargo clippy --quiet --manifest-path "$manifest" -- -D warnings || exit 1; done'
+        language: system
+        files: ^rust/.*\.rs$
+        pass_filenames: false

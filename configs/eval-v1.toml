@@ -1,0 +1,557 @@
+# Evaluation config v1. Run from the repository root:
+#   akheval suite --config configs/eval-v1.toml
+# Paths are relative to the repository root.
+# Runs named dev-* use the dev split: two Core reference runs, the rest choose thresholds, routing and the MVP
+# configuration.
+# Every other run uses the test split and reports the configurations fixed on dev.
+
+[project]
+dataset = "datasets/akhtabooti-v1"
+results = "reports/v1/runs"
+tuning = "reports/v1/tuning"
+
+# Detectors -------------------------------------------------------------------
+
+# Core main as of 7 Oct 2026, the agreed baseline.
+[detectors.core-main]
+kind = "core-rules"
+core_sha = "68d1749"
+
+# Core main as of 1 Oct 2026, kept to measure what the 7 Oct commits changed.
+[detectors.core-main-937e6ca]
+kind = "core-rules"
+core_sha = "937e6ca"
+
+[detectors.core-release]
+kind = "core-rules"
+core_sha = "97c7afb"
+
+# Locates IBAN, IP and UNHCR number values, as if the Core showed them the way it shows phones.
+[detectors.core-proposed]
+kind = "core-rules"
+core_sha = "68d1749"
+definitions = "rules/definitions-proposed.json"
+located_categories = ["Email", "Phone Number", "IBAN", "IP Address", "UNHCR Number"]
+
+[detectors.nym-small]
+kind = "nym"
+model_dir = "models/nym-pii-multilingual-small"
+variant = "int8"
+threshold = 0.5
+
+[detectors.nym-edge]
+kind = "nym"
+model_dir = "models/nym-pii-multilingual-small"
+variant = "edge-int8"
+threshold = 0.55
+
+[detectors.camelbert]
+kind = "hf-token"
+model = "models/camelbert-mix-ner"
+labels = "camelbert"
+threshold = 0.2
+
+[detectors.dialogpii]
+kind = "dialogpii"
+model_dir = "models/dialogpii"
+threshold = 0.55
+
+[detectors.hybrid-small]
+kind = "hybrid"
+parts = ["core-proposed", "nym-small"]
+
+[detectors.hybrid-edge]
+kind = "hybrid"
+parts = ["core-proposed", "nym-edge"]
+
+# The hybrid as the brief words it (section 6.4): Core main rules unchanged, then Nym Small. Measures what the model
+# adds to the Core as it is; the MVP hybrids use the proposed rules instead.
+[detectors.hybrid-main-small]
+kind = "hybrid"
+parts = ["core-main", "nym-small"]
+
+# Routed hybrids: the rules keep the pattern categories and UNHCR numbers, the model the contextual ones, national IDs
+# and passports.
+[detectors.hybrid-small-routed]
+kind = "hybrid"
+parts = ["core-proposed", "nym-small"]
+
+[detectors.hybrid-small-routed.only]
+core-proposed = ["EMAIL", "PHONE", "IBAN", "IP_ADDRESS", "REFUGEE_ID"]
+nym-small = ["PERSON", "ORG", "LOCATION", "ADDRESS", "NATIONAL_ID", "PASSPORT"]
+
+[detectors.hybrid-edge-routed]
+kind = "hybrid"
+parts = ["core-proposed", "nym-edge"]
+
+[detectors.hybrid-edge-routed.only]
+core-proposed = ["EMAIL", "PHONE", "IBAN", "IP_ADDRESS", "REFUGEE_ID"]
+nym-edge = ["PERSON", "ORG", "LOCATION", "ADDRESS", "NATIONAL_ID", "PASSPORT"]
+
+[detectors.regex-baseline]
+kind = "regex-baseline"
+
+# Extractors ------------------------------------------------------------------
+
+[extractors.extractous]
+kind = "extractous"
+
+# The desktop app does not bundle tesseract; without it Tika returns no text for images and scanned PDFs.
+[extractors.extractous-no-tesseract]
+kind = "extractous"
+tesseract = false
+
+[extractors.tesseract-eng]
+kind = "tesseract"
+lang = "eng"
+
+[extractors.tesseract-ara-eng]
+kind = "tesseract"
+lang = "ara+eng"
+
+[extractors.ppocr-v6-small]
+kind = "ppocr"
+binary = "rust/ocr/bin/akh-ocr"
+det = "models/ppocr/PP-OCRv6_small_det.mnn"
+rec = "models/ppocr/PP-OCRv6_small_rec.mnn"
+keys = "models/ppocr/ppocr_keys_v6_small.txt"
+
+# OCR exactly as Core main 68d1749 runs it (src/file_utils.rs): PP-OCRv6 small detection, the Arabic PP-OCRv5
+# recogniser, engine order, no bidi fix.
+[extractors.ppocr-core-main]
+kind = "ppocr"
+binary = "rust/ocr/bin/akh-ocr"
+det = "models/ppocr/PP-OCRv6_small_det.mnn"
+rec = "models/ppocr/arabic_PP-OCRv5_mobile_rec_infer.mnn"
+keys = "models/ppocr/ppocr_keys_arabic.txt"
+
+[extractors.ppocr-v5-arabic]
+kind = "ppocr"
+binary = "rust/ocr/bin/akh-ocr"
+det = "models/ppocr/PP-OCRv5_mobile_det.mnn"
+rec = "models/ppocr/arabic_PP-OCRv5_mobile_rec_infer.mnn"
+keys = "models/ppocr/ppocr_keys_arabic.txt"
+order = "reading"
+fix_rtl = true
+
+# Arabic and English recognisers on the same boxes; the higher-confidence reading wins per box.
+[extractors.ppocr-v5-arabic-en]
+kind = "ppocr"
+binary = "rust/ocr/bin/akh-ocr"
+det = "models/ppocr/PP-OCRv5_mobile_det.mnn"
+rec = ["models/ppocr/arabic_PP-OCRv5_mobile_rec_infer.mnn", "models/ppocr/en_PP-OCRv5_mobile_rec_infer.mnn"]
+keys = ["models/ppocr/ppocr_keys_arabic.txt", "models/ppocr/ppocr_keys_en.txt"]
+order = "reading"
+fix_rtl = true
+
+# Extraction for the MVP candidate: images go to `ocr`, PDFs to the text layer with `ocr` when it is near empty,
+# other files to extractous. Choose `ocr` from the dev-extract-* runs. Tika runs no tesseract here, so a scanned
+# PDF reaches `ocr`.
+[extractors.mvp-extract]
+kind = "pdf-ocr"
+text = "extractous-no-tesseract"
+ocr = "ppocr-v5-arabic-en"
+
+# Pipelines: file -> extractor -> detector -------------------------------------
+
+[pipelines."app-v0.1.0"]
+detector = "core-release"
+extractors = { default = "extractous" }
+
+[pipelines."app-v0.1.0-no-tesseract"]
+detector = "core-release"
+extractors = { default = "extractous-no-tesseract" }
+
+[pipelines.core-main]
+detector = "core-main"
+extractors = { default = "extractous", jpg = "ppocr-core-main", png = "ppocr-core-main" }
+
+[pipelines.core-main-937e6ca]
+detector = "core-main-937e6ca"
+extractors = { default = "extractous", jpg = "ppocr-v6-small", png = "ppocr-v6-small" }
+
+# Repoint the MVP candidate with two names: `detector` here and `ocr` in [extractors.mvp-extract].
+[pipelines.mvp-candidate]
+detector = "hybrid-small"
+extractors = { default = "mvp-extract" }
+
+# Dev runs: Core reference and selection --------------------------------------
+
+# Core main, the baseline, and the release: reference rows for the selection runs below.
+[[runs]]
+name = "dev-text-core-main"
+mode = "text"
+split = "dev"
+detector = "core-main"
+
+[[runs]]
+name = "dev-text-core-release"
+mode = "text"
+split = "dev"
+detector = "core-release"
+
+[[runs]]
+name = "dev-text-core-proposed"
+mode = "text"
+split = "dev"
+detector = "core-proposed"
+
+[[runs]]
+name = "dev-text-nym-small"
+mode = "text"
+split = "dev"
+detector = "nym-small"
+
+[[runs]]
+name = "dev-text-nym-edge"
+mode = "text"
+split = "dev"
+detector = "nym-edge"
+
+[[runs]]
+name = "dev-text-hybrid-small"
+mode = "text"
+split = "dev"
+detector = "hybrid-small"
+
+[[runs]]
+name = "dev-text-hybrid-edge"
+mode = "text"
+split = "dev"
+detector = "hybrid-edge"
+
+[[runs]]
+name = "dev-text-hybrid-main-small"
+mode = "text"
+split = "dev"
+detector = "hybrid-main-small"
+
+[[runs]]
+name = "dev-text-hybrid-small-routed"
+mode = "text"
+split = "dev"
+detector = "hybrid-small-routed"
+
+[[runs]]
+name = "dev-text-hybrid-edge-routed"
+mode = "text"
+split = "dev"
+detector = "hybrid-edge-routed"
+
+[[runs]]
+name = "dev-extract-ppocr-v5-arabic"
+mode = "extract"
+split = "dev"
+channel = "ocr"
+extractors = { default = "ppocr-v5-arabic" }
+
+[[runs]]
+name = "dev-extract-ppocr-v5-arabic-en"
+mode = "extract"
+split = "dev"
+channel = "ocr"
+extractors = { default = "ppocr-v5-arabic-en" }
+
+[[runs]]
+name = "dev-extract-tesseract-ara-eng"
+mode = "extract"
+split = "dev"
+channel = "ocr"
+extractors = { default = "tesseract-ara-eng" }
+
+[[runs]]
+name = "dev-extract-ppocr-v6-small"
+mode = "extract"
+split = "dev"
+channel = "ocr"
+extractors = { default = "ppocr-v6-small" }
+
+[[runs]]
+name = "dev-extract-ppocr-core-main"
+mode = "extract"
+split = "dev"
+channel = "ocr"
+extractors = { default = "ppocr-core-main" }
+
+# Test runs: reporting --------------------------------------------------------
+
+[[runs]]
+name = "text-core-main"
+mode = "text"
+split = "test"
+detector = "core-main"
+
+[[runs]]
+name = "text-core-main-937e6ca"
+mode = "text"
+split = "test"
+detector = "core-main-937e6ca"
+
+[[runs]]
+name = "text-core-release"
+mode = "text"
+split = "test"
+detector = "core-release"
+
+[[runs]]
+name = "text-core-proposed"
+mode = "text"
+split = "test"
+detector = "core-proposed"
+
+[[runs]]
+name = "text-nym-small"
+mode = "text"
+split = "test"
+detector = "nym-small"
+
+[[runs]]
+name = "text-nym-edge"
+mode = "text"
+split = "test"
+detector = "nym-edge"
+
+[[runs]]
+name = "text-camelbert"
+mode = "text"
+split = "test"
+detector = "camelbert"
+
+[[runs]]
+name = "text-dialogpii"
+mode = "text"
+split = "test"
+detector = "dialogpii"
+
+[[runs]]
+name = "text-hybrid-small"
+mode = "text"
+split = "test"
+detector = "hybrid-small"
+
+[[runs]]
+name = "text-hybrid-edge"
+mode = "text"
+split = "test"
+detector = "hybrid-edge"
+
+[[runs]]
+name = "text-hybrid-main-small"
+mode = "text"
+split = "test"
+detector = "hybrid-main-small"
+
+[[runs]]
+name = "text-hybrid-small-routed"
+mode = "text"
+split = "test"
+detector = "hybrid-small-routed"
+
+[[runs]]
+name = "text-hybrid-edge-routed"
+mode = "text"
+split = "test"
+detector = "hybrid-edge-routed"
+
+[[runs]]
+name = "pipeline-app-v0.1.0"
+mode = "pipeline"
+split = "test"
+pipeline = "app-v0.1.0"
+
+[[runs]]
+name = "pipeline-app-v0.1.0-no-tesseract"
+mode = "pipeline"
+split = "test"
+pipeline = "app-v0.1.0-no-tesseract"
+
+[[runs]]
+name = "pipeline-core-main"
+mode = "pipeline"
+split = "test"
+pipeline = "core-main"
+
+[[runs]]
+name = "pipeline-core-main-937e6ca"
+mode = "pipeline"
+split = "test"
+pipeline = "core-main-937e6ca"
+
+[[runs]]
+name = "pipeline-mvp-candidate"
+mode = "pipeline"
+split = "test"
+pipeline = "mvp-candidate"
+
+# Extraction quality only, on the OCR channel (scans and photos). Extractous reads images through Tika's
+# Tesseract OCR, the path the released app takes. extract-extractous-native measures the native text layer.
+
+[[runs]]
+name = "extract-extractous"
+mode = "extract"
+split = "test"
+channel = "ocr"
+extractors = { default = "extractous" }
+
+[[runs]]
+name = "extract-extractous-native"
+mode = "extract"
+split = "test"
+channel = "native"
+extractors = { default = "extractous" }
+
+[[runs]]
+name = "extract-tesseract-eng"
+mode = "extract"
+split = "test"
+channel = "ocr"
+extractors = { default = "tesseract-eng" }
+
+[[runs]]
+name = "extract-tesseract-ara-eng"
+mode = "extract"
+split = "test"
+channel = "ocr"
+extractors = { default = "tesseract-ara-eng" }
+
+[[runs]]
+name = "extract-ppocr-v6-small"
+mode = "extract"
+split = "test"
+channel = "ocr"
+extractors = { default = "ppocr-v6-small" }
+
+[[runs]]
+name = "extract-ppocr-core-main"
+mode = "extract"
+split = "test"
+channel = "ocr"
+extractors = { default = "ppocr-core-main" }
+
+[[runs]]
+name = "extract-ppocr-v5-arabic"
+mode = "extract"
+split = "test"
+channel = "ocr"
+extractors = { default = "ppocr-v5-arabic" }
+
+[[runs]]
+name = "extract-ppocr-v5-arabic-en"
+mode = "extract"
+split = "test"
+channel = "ocr"
+extractors = { default = "ppocr-v5-arabic-en" }
+
+# Comparisons: baseline first --------------------------------------------------
+
+# On dev, for choosing the MVP detector.
+[[comparisons]]
+name = "dev-hybrid-small-vs-hybrid-edge"
+baseline = "dev-text-hybrid-small"
+candidate = "dev-text-hybrid-edge"
+
+[[comparisons]]
+name = "dev-hybrid-small-vs-routed"
+baseline = "dev-text-hybrid-small"
+candidate = "dev-text-hybrid-small-routed"
+
+[[comparisons]]
+name = "dev-hybrid-edge-vs-routed"
+baseline = "dev-text-hybrid-edge"
+candidate = "dev-text-hybrid-edge-routed"
+
+# What the proposed rules add to the brief's hybrid of Core main rules and Nym Small.
+[[comparisons]]
+name = "dev-hybrid-main-small-vs-hybrid-small"
+baseline = "dev-text-hybrid-main-small"
+candidate = "dev-text-hybrid-small"
+
+# On test, for the reports.
+
+[[comparisons]]
+name = "core-release-vs-core-main"
+baseline = "text-core-release"
+candidate = "text-core-main"
+
+# What the Core's 7 Oct commits changed.
+[[comparisons]]
+name = "core-main-937e6ca-vs-68d1749"
+baseline = "text-core-main-937e6ca"
+candidate = "text-core-main"
+
+[[comparisons]]
+name = "pipeline-core-main-937e6ca-vs-68d1749"
+baseline = "pipeline-core-main-937e6ca"
+candidate = "pipeline-core-main"
+
+[[comparisons]]
+name = "core-main-vs-core-proposed"
+baseline = "text-core-main"
+candidate = "text-core-proposed"
+
+[[comparisons]]
+name = "core-main-vs-nym-small"
+baseline = "text-core-main"
+candidate = "text-nym-small"
+
+[[comparisons]]
+name = "nym-small-vs-nym-edge"
+baseline = "text-nym-small"
+candidate = "text-nym-edge"
+
+# Diagnostics: the brief uses DialogPII and CAMeLBERT to explain Arabic and contextual gaps, not as candidates.
+[[comparisons]]
+name = "nym-small-vs-camelbert"
+baseline = "text-nym-small"
+candidate = "text-camelbert"
+
+[[comparisons]]
+name = "nym-small-vs-dialogpii"
+baseline = "text-nym-small"
+candidate = "text-dialogpii"
+
+[[comparisons]]
+name = "core-main-vs-hybrid-small"
+baseline = "text-core-main"
+candidate = "text-hybrid-small"
+
+# The brief's hybrid (section 6.4) against the baseline, then what the proposed rules add to it.
+[[comparisons]]
+name = "core-main-vs-hybrid-main-small"
+baseline = "text-core-main"
+candidate = "text-hybrid-main-small"
+
+[[comparisons]]
+name = "hybrid-main-small-vs-hybrid-small"
+baseline = "text-hybrid-main-small"
+candidate = "text-hybrid-small"
+
+[[comparisons]]
+name = "hybrid-small-vs-hybrid-edge"
+baseline = "text-hybrid-small"
+candidate = "text-hybrid-edge"
+
+[[comparisons]]
+name = "hybrid-small-vs-routed"
+baseline = "text-hybrid-small"
+candidate = "text-hybrid-small-routed"
+
+[[comparisons]]
+name = "hybrid-edge-vs-routed"
+baseline = "text-hybrid-edge"
+candidate = "text-hybrid-edge-routed"
+
+[[comparisons]]
+name = "pipeline-app-v0.1.0-no-tesseract-vs-tesseract"
+baseline = "pipeline-app-v0.1.0-no-tesseract"
+candidate = "pipeline-app-v0.1.0"
+
+[[comparisons]]
+name = "pipeline-app-v0.1.0-vs-core-main"
+baseline = "pipeline-app-v0.1.0"
+candidate = "pipeline-core-main"
+
+[[comparisons]]
+name = "pipeline-core-main-vs-mvp-candidate"
+baseline = "pipeline-core-main"
+candidate = "pipeline-mvp-candidate"

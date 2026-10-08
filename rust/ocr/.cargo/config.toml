@@ -1,0 +1,3 @@
+# The default toolchain here is Rust 1.84; pick the newest dependency versions that still build on it.
+[resolver]
+incompatible-rust-versions = "fallback"

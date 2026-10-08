@@ -1,0 +1,21 @@
+{
+  "lines": [
+    "شركة الأفق للتقنية",
+    "تقرير حادثة أمنية / Security Incident Report",
+    "رقم الحادثة / Incident no.: 2024/056",
+    "التاريخ / Date: 2026-06-05",
+    "أعد التقرير / Reported by: Yazan Al-Khalili <y.khalili@ufuq-tech.jo>",
+    "الجهاز المتأثر / Affected host: fw-edge-01 (192.168.120.26)",
+    "إصدار الوكيل / Agent build: 6.9.17.178",
+    "",
+    "النظام سجل 146 failed SSH logins من 10.175.165.232 على الـ server 192.168.120.26.",
+    "الـ endpoint agent (build 10.6.11.248) عمل block للـ source، وعملنا reset لباسوورد Mohammad Sawalha.",
+    "",
+    "مقتطف من السجل / Log excerpt",
+    "2026-06-05 05:50:23 sshd[2241]: Failed password for invalid user root from 10.175.165.232 port 19703 ssh2",
+    "2026-06-05 05:22:35 kernel: [UFW BLOCK] SRC=10.175.165.232 DST=192.168.120.26 PROTO=TCP SPT=15026 DPT=22",
+    "2026-06-05 05:35:11 sshd[2691]: Accepted publickey for svc_web from 203.0.113.146 port 22108",
+    "",
+    "للمتابعة تواصلوا مع فريق تقنية المعلومات على admin@ufuq-tech.jo أو 063652701."
+  ]
+}

@@ -1,0 +1,12 @@
+سجل الوصول / access.log - srv-web-02
+Balsam Specialty Hospital
+10.227.36.37 - - [05/Mar/2026:20:23:52 +0300] "POST /reports/2026 HTTP/1.1" 401 6923 "-" "curl/8.5.0"
+172.17.4.13 - - [05/Mar/2026:20:22:24 +0300] "GET /wp-login.php HTTP/1.1" 401 2370 "-" "curl/8.5.0"
+192.0.2.41 - - [05/Mar/2026:20:58:07 +0300] "POST /login HTTP/1.1" 401 8263 "-" "curl/8.5.0"
+10.188.243.236 - - [05/Mar/2026:20:20:53 +0300] "GET /wp-login.php HTTP/1.1" 404 2118 "-" "backup-agent/5.6.14.236"
+10.187.77.189 - - [05/Mar/2026:20:08:18 +0300] "POST /admin HTTP/1.1" 301 3701 "-" "backup-agent/11.7.16.35"
+2001:0db8:64b0:2532:0498:4411:0000:0001 - - [05/Mar/2026:20:39:05 +0300] "POST /api/v1/users HTTP/1.1" 301 4688 "-" "curl/8.5.0"
+192.168.41.207 - - [05/Mar/2026:20:31:03 +0300] "POST /index.php HTTP/1.1" 403 1172 "-" "backup-agent/3.5.19.151"
+10.15.51.194 - - [05/Mar/2026:20:52:46 +0300] "POST /login HTTP/1.1" 401 8719 "-" "curl/8.5.0"
+
+صدّره / Exported by Dana Bani Yaseen (dana1987@yahoo.com) on 23/09/2026

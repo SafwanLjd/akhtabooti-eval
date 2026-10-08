@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head><meta charset="utf-8"></head>
+<body>
+<h1 dir="auto">Banafsaj Medical Centre</h1>
+<h2 dir="auto">Security incident report</h2>
+<p dir="auto">Incident no.: 9150-4175</p>
+<p dir="auto">Date: 2026-06-01</p>
+<p dir="auto">Reported by: Nabil Al-Majali &lt;nabil1985@banafsaj-medical.jo&gt;</p>
+<p dir="auto">Affected host: mail-01 (198.51.100.93)</p>
+<p dir="auto">Agent build: 8.9.19.86</p>
+<br>
+<p dir="auto">The system logged 83 failed SSH logins from 192.0.2.72 against 198.51.100.93.</p>
+<p dir="auto">The endpoint agent (build 6.8.15.18) blocked the source, and the password of Hisham Al-Adwan was reset.</p>
+<br>
+<h2 dir="auto">Log excerpt</h2>
+<p dir="auto">2026-06-01 01:34:04 sshd[8806]: Accepted publickey for admin from 192.0.2.72 port 61915</p>
+<p dir="auto">2026-06-01 01:43:42 sshd[3643]: Failed password for invalid user ubuntu from 192.0.2.72 port 36951 ssh2</p>
+<p dir="auto">2026-06-01 01:12:47 kernel: [UFW BLOCK] SRC=192.0.2.72 DST=198.51.100.93 PROTO=TCP SPT=5666 DPT=22</p>
+<p dir="auto">2026-06-01 01:47:40 nginx: fe80::e7c7:4196:b289:a342 &quot;GET /login HTTP/1.1&quot; 500</p>
+<p dir="auto">2026-06-01 01:22:10 sshd[6528]: Failed password for invalid user ubuntu from 198.51.100.115 port 36907 ssh2</p>
+<br>
+<p dir="auto">Follow-up: contact the IT team at admin@banafsaj-medical.jo or 06 9317139.</p>
+<br>
+<p dir="auto">Printed on 29/9/2026</p>
+</body>
+</html>

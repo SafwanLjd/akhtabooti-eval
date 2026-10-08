@@ -1,0 +1,22 @@
+Al-Nada Technologies
+Employee record
+
+Employee no.: 2332-5146
+Full name: Mona Zaid Murad Al-Shawabkeh
+National no.: 9812742322
+Mobile: +962 79 801 1206
+Date of birth: 17-04-1981
+Place of birth: Deir ez-Zor
+Email: shawabkeh.mona77@outlook.com
+Address: Building 57, Al-Shaheed Street, Hashmi Al-Shamali, Amman
+Department: Communications
+Job title: Nurse
+Start date: 30/12/2024
+Basic salary: JOD 22,817.000
+Bank: Narjis Bank
+IBAN: JO78 NARJ 9041 7815 2232 3434 6927 58
+Emergency contact: Asmaa Al-Atoum, Daughter, +962 6 330 7898
+
+Notes: contract renewed on 14 February 2026; probation completed.
+
+Printed on 23/09/2026

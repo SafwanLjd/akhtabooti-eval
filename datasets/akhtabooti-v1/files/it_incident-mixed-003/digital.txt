@@ -1,0 +1,19 @@
+مؤسسة الندى للتنمية المجتمعية
+تقرير حادثة أمنية / Security Incident Report
+رقم الحادثة / Incident no.: 2026/654
+التاريخ / Date: 2026-07-04
+أعد التقرير / Reported by: Wassim Bani Hani <banihani.wassim89@nada-dev.org>
+الجهاز المتأثر / Affected host: srv-web-02 (203.0.113.30)
+إصدار الوكيل / Agent build: 10.4.7.9
+
+رصد النظام 104 محاولة دخول فاشلة عبر SSH من العنوان 192.0.2.239 استهدفت الخادم 203.0.113.30.
+الـ endpoint agent (build 7.1.7.27) عمل block للـ source، وعملنا reset لباسوورد Tamer Al-Khatib.
+
+مقتطف من السجل / Log excerpt
+2026-07-04 11:49:01 sshd[9084]: Failed password for invalid user oracle from 192.0.2.239 port 41739 ssh2
+2026-07-04 11:55:23 sshd[6471]: Failed password for invalid user ubuntu from 10.117.138.211 port 12046 ssh2
+2026-07-04 11:07:42 sshd[6648]: Failed password for invalid user root from 172.28.1.192 port 15988 ssh2
+2026-07-04 11:34:18 kernel: [UFW BLOCK] SRC=192.0.2.239 DST=203.0.113.30 PROTO=TCP SPT=11540 DPT=22
+2026-07-04 11:53:29 sshd[4188]: Accepted publickey for backup from 192.0.2.239 port 5428
+
+للمتابعة تواصلوا مع فريق تقنية المعلومات على contact@nada-dev.org أو 02 4584549.

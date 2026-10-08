@@ -1,0 +1,37 @@
+{
+  "Email": {
+    "region": null,
+    "rules": [
+      [{ "regex": "[A-Za-z0-9._+\\-\\']+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}" }]
+    ]
+  },
+  "Phone Number": {
+    "region": null,
+    "rules": [
+      [{ "regex": "^(?:(?:\\+|00)962|0)7[789]\\d{7}$" }],
+      [{ "regex": "^(?:(?:\\+|00)963|0)9\\d{8}$" }]
+    ]
+  },
+  "Jordanian National ID": {
+    "region": "Jordan",
+    "rules": [
+      [{ "regex": "(?:IDJOR)(?:[A-Z0-9<].+)" }],
+      [
+        { "keywords": ["Jordan"] },
+        { "keywords": ["Minitstry of Interior", "Civil Status"] }
+      ],
+      [
+        { "keywords": ["ID"] },
+        { "keywords": ["<<"] }
+      ]
+    ]
+  },
+  "Jordanian Passport": {
+    "region": "Jordan",
+    "rules": [
+      [{ "regex": "P<JOR[A-Z<]{30,39}" }],
+      [{ "regex": "[A-Z0-9<]{9}[0-9]JOR[0-9]{6}[0-9][MF<][0-9]{6}[0-9]" }],
+      [{ "keywords": ["Passport"] }, { "keywords": ["JOR", "Jordan", "HASHEMITE KINGDOM"] }]
+    ]
+  }
+}

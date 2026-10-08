@@ -1,0 +1,52 @@
+# PaddleOCR models in MNN format for akh-ocr (rust/ocr).
+# Source: github.com/zibo-chen/rust-paddle-ocr at tag v2.4.1, commit d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b,
+# the release that matches the ocr-rs version the Core pins. The main branch of that repository has no PP-OCRv6 files.
+# The first three files are the Core main defaults (src/file_utils.rs loads models/PP-OCRv6_small_*).
+
+[[file]]
+name = "PP-OCRv6_small_det.mnn"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/PP-OCRv6_small_det.mnn"
+path = "models/ppocr/PP-OCRv6_small_det.mnn"
+sha256 = "2c6277abbbddb4c77a790f4650cdd7f8ab33512db38fac372ed5471538070619"
+
+[[file]]
+name = "PP-OCRv6_small_rec.mnn"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/PP-OCRv6_small_rec.mnn"
+path = "models/ppocr/PP-OCRv6_small_rec.mnn"
+sha256 = "ed59cc294fe2d564bd64f929b5356b70abd0977f99e7e60e3b08cfeef4ef72be"
+
+[[file]]
+name = "ppocr_keys_v6_small.txt"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/ppocr_keys_v6_small.txt"
+path = "models/ppocr/ppocr_keys_v6_small.txt"
+sha256 = "b5f2bfe2bdd9448429e3e82b51c789775d9b42f2403d082b00662eb77e401c5d"
+
+[[file]]
+name = "PP-OCRv5_mobile_det.mnn"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/PP-OCRv5_mobile_det.mnn"
+path = "models/ppocr/PP-OCRv5_mobile_det.mnn"
+sha256 = "326f846bb5c903282e116ea089e8796b67921586726cca9457730436a79684c3"
+
+[[file]]
+name = "arabic_PP-OCRv5_mobile_rec_infer.mnn"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/arabic_PP-OCRv5_mobile_rec_infer.mnn"
+path = "models/ppocr/arabic_PP-OCRv5_mobile_rec_infer.mnn"
+sha256 = "6c5d0653cdcf78317321b3932b62f02814b8d3b8bd2a8760ffc7316f8727cf33"
+
+[[file]]
+name = "ppocr_keys_arabic.txt"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/ppocr_keys_arabic.txt"
+path = "models/ppocr/ppocr_keys_arabic.txt"
+sha256 = "7f92f7dbb9b75a4787a83bfb4f6d14a8ab515525130c9d40a9036f61cf6999e9"
+
+[[file]]
+name = "en_PP-OCRv5_mobile_rec_infer.mnn"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/en_PP-OCRv5_mobile_rec_infer.mnn"
+path = "models/ppocr/en_PP-OCRv5_mobile_rec_infer.mnn"
+sha256 = "c5e747fb69275e9d99fbe54f97642c65681c3e4244383f825d1d7668e9aece81"
+
+[[file]]
+name = "ppocr_keys_en.txt"
+url = "https://raw.githubusercontent.com/zibo-chen/rust-paddle-ocr/d7d4e4f2f5cebea6d1423fa85fcb5962eb73b38b/models/ppocr_keys_en.txt"
+path = "models/ppocr/ppocr_keys_en.txt"
+sha256 = "e025a66d31f327ba0c232e03f407ae8d105e1e709e7ccb3f408aa778c24e70d6"

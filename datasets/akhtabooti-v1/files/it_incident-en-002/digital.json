@@ -1,0 +1,24 @@
+{
+  "lines": [
+    "Al-Murjan Medical Centre",
+    "Security incident report",
+    "Incident no.: ADM/2025/3589",
+    "Date: 2026-04-09",
+    "Reported by: Tala Al-Habashneh <habashneh.tala79@murjan-medical.jo>",
+    "Affected host: nas-office (192.168.153.247)",
+    "Agent build: 11.1.1.217",
+    "",
+    "The system logged 213 failed SSH logins from 203.0.113.250 against 192.168.153.247.",
+    "The endpoint agent (build 4.4.20.189) blocked the source, and the password of Anas Al-Majali was reset.",
+    "",
+    "Log excerpt",
+    "2026-04-09 19:16:01 sshd[1136]: Accepted publickey for test from 203.0.113.250 port 14866",
+    "2026-04-09 19:07:21 nginx: fe80::930:131e:f4f0:d5b0 \"GET /api/v1/users HTTP/1.1\" 401",
+    "2026-04-09 19:12:00 kernel: [UFW BLOCK] SRC=203.0.113.119 DST=192.168.153.247 PROTO=TCP SPT=33847 DPT=22",
+    "2026-04-09 19:11:36 nginx: 2001:0db8:fb00:c690:14e8:3324:0000:0001 \"GET /reports/2026 HTTP/1.1\" 301",
+    "",
+    "Follow-up: contact the IT team at info@murjan-medical.jo or 020588137.",
+    "",
+    "CONFIDENTIAL - internal use"
+  ]
+}

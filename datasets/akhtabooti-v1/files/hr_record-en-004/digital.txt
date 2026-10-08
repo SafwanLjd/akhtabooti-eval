@@ -1,0 +1,21 @@
+Maarifa Technologies
+Employee record
+
+Employee no.: 3983-2841
+Full name: Khadija Ahmad Al-Khalayleh
+Passport no.: T5619060
+UNHCR case no.: 946-21C49706
+Date of birth: October 8, 1999
+Place of birth: Daraa
+Address: Apartment 17, Building 110, Al-Nasr Street, Weibdeh, Amman
+Email: k.khalayleh@hotmail.com
+Mobile: 00962 78 228 3443
+Department: Human Resources
+Job title: IT Officer
+Start date: 04-02-2023
+Basic salary: JOD 934.000
+Bank: Maraya Bank
+IBAN: JO62MARA5359236726179457083921
+Emergency contact: Suha Al-Rifai, Mother, 077 704 0753
+
+Notes: contract renewed on 2026-06-07; probation completed.

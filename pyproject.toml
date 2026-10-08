@@ -1,0 +1,83 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "akheval"
+version = "1.0.0"
+description = "Evaluation harness for the Akhtabooti offline PII scanner"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.11"
+dependencies = ["rapidfuzz>=3.6"]
+
+[project.optional-dependencies]
+synth = [
+    "pillow",
+    "numpy",
+    "opencv-python-headless",
+    "openpyxl>=3.1",
+    "python-docx>=1.1",
+    "fonttools>=4.40",
+    "pytesseract",
+    "extractous==0.3.0",
+]
+extract = ["extractous==0.3.0", "pytesseract", "python-bidi>=0.6"]
+models = [
+    "numpy",
+    "onnxruntime",
+    "tokenizers",
+    "huggingface_hub",
+    "torch",
+    "transformers>=5",
+    "pytorch-crf==0.7.2",
+    "psutil>=5.9",
+]
+dev = ["pytest", "ruff", "mypy", "pre-commit", "types-openpyxl", "types-psutil"]
+
+[project.scripts]
+akheval = "akheval.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "C4", "PTH", "N", "ARG"]
+
+[tool.ruff.format]
+line-ending = "lf"
+
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "src"
+disallow_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+
+[[tool.mypy.overrides]]
+module = [
+    "bidi.*",
+    "cv2.*",
+    "docx.*",
+    "extractous.*",
+    "fontTools.*",
+    "huggingface_hub.*",
+    "onnxruntime.*",
+    "pytesseract.*",
+    "tokenizers.*",
+    "torch.*",
+    "torchcrf.*",
+    "transformers.*",
+]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["tests"]
+markers = ["integration: needs a built binary, a downloaded model, LibreOffice, tesseract or poppler"]

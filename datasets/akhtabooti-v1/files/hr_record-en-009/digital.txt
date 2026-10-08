@@ -1,0 +1,21 @@
+Rawahel Technologies
+Employee record
+
+Employee no.: 7082-5354
+Full name: Hussein Ammar Tamer Abu Zaid
+Passport no.: L862326
+UNHCR case no.: 947-19C49557
+Address: P.O. Box 8050, Amman 11426, Jordan
+Mobile: 0799992276
+Place of birth: Jenin
+Date of birth: 09-03-2000
+Email: h.abuzaid@icloud.com
+Department: Operations
+Job title: Protection Officer
+Start date: 21/3/2022
+Basic salary: JOD 13,386.000
+Bank: Manara Bank
+IBAN: JO81 MANA 2809 1102 1569 6261 3752 56
+Emergency contact: Zainab Abu Zaid, Daughter, 078-701-8807
+
+Notes: paper file 4139-8067 is kept by Human Resources.

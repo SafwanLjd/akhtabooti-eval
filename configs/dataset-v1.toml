@@ -1,0 +1,44 @@
+# Evaluation Dataset v1: synthetic documents for the Akhtabooti PII evaluation.
+# Regenerate with the akheval CLI; see README.md.
+
+[dataset]
+name = "akhtabooti-eval"
+version = "1.0.0"
+seed = 20261011
+dev_fraction = 0.3
+min_test_entities = 30
+notes = "Synthetic documents only; every name, number and address is invented."
+
+# Documents per language for each document type.
+[documents]
+letter = 10
+hr_record = 14
+invoice = 14
+contact_list = 10
+jo_id_card = 10
+jo_passport = 14
+sy_id_card = 10
+refugee_certificate = 12
+chat = 10
+press_note = 10
+cv = 10
+it_incident = 10
+notice_no_pii = 10
+
+[images]
+card_scan_share = 0.3
+card_scan_formats = ["png", "pdf"]
+page_image_share = 0.5
+page_photo_share = 0.5
+page_scan_formats = ["jpg", "png", "pdf"]
+chat_screenshot_share = 0.4
+
+[images.severity]
+mild = 0.4
+moderate = 0.4
+harsh = 0.2
+
+[native]
+verify = true
+soffice = "soffice"
+timeout_seconds = 900
